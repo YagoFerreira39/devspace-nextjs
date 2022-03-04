@@ -6,7 +6,7 @@ const Layout = ({ title, keywords, description, children }) => {
     <div className=''>
       <head>
         <title>{title}</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel='icon' href='/favicon.ico' />
         <meta name="keywords" content={keywords} />
         <meta name="description" content={description} />
       </head>
