@@ -5,6 +5,7 @@ import Layout from '../../../components/Layout';
 import Link from 'next/link';
 import Post from '../../../components/Post';
 import { sortByDate } from '../../../utils';
+import { getPosts } from '@/lib/post';
 
 export default function CategoryBlogPage({ posts, categoryName }) {
   return (
@@ -46,19 +47,8 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { category_name } }) {
-  console.log("CTG", category_name)
-  const files = fs.readdirSync(path.join('posts'))
-  const posts = files.map(filename => {
-    const slug = filename.replace('.md', '')
-
-    const markdownWithMeta = fs.readFileSync(path.join('posts', filename), 'utf-8')
-
-    const { data: frontmatter } = matter(markdownWithMeta)
-
-    return { slug, frontmatter }
-  })
-
   //Filter posts by category
+  const posts = getPosts()
   const categoryPosts = posts.filter(post => post.frontmatter.category.toLowerCase() === category_name)
 
   return {

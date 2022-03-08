@@ -1,13 +1,12 @@
 import fs from 'fs'
 import path from 'path'
 import { useRouter } from 'next/router'
-import matter from 'gray-matter'
 import Layout from '../../../components/Layout';
-import Link from 'next/link';
 import Post from '../../../components/Post';
 import { sortByDate } from '../../../utils';
 import { POSTS_PER_PAGE } from '../../../config';
 import Pagination from '../../../components/Pagination';
+import { getPosts } from '@/lib/post';
 
 export default function BlogPage({ posts, numPages, currentPage }) {
   const router = useRouter();
@@ -48,15 +47,8 @@ export async function getStaticProps({ params }) {
   const page = parseInt((params && params.page_index) || 1)
 
   const files = fs.readdirSync(path.join('posts'))
-  const posts = files.map(filename => {
-    const slug = filename.replace('.md', '')
 
-    const markdownWithMeta = fs.readFileSync(path.join('posts', filename), 'utf-8')
-
-    const { data: frontmatter } = matter(markdownWithMeta)
-
-    return { slug, frontmatter }
-  })
+  const posts = getPosts();
 
   const numPages = Math.ceil(files.length / POSTS_PER_PAGE)
   const pageIndex = page - 1
