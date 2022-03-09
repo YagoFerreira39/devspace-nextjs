@@ -8,6 +8,7 @@ const search = ((req, res) => {
   if(process.env.NODE_ENV === 'production') {
     // Fetch from cache
     posts = require('../../cache/data').posts
+    console.log("PRODUCTION", posts)
   } else {
     const files = fs.readdirSync(path.join('posts'))
 
@@ -23,6 +24,8 @@ const search = ((req, res) => {
       }
     })
   }
+
+  console.log("CHECK POSTS", posts)
 
   const results = posts.filter(({ frontmatter: { title, excerpt, category }}) => title.toLowerCase().indexOf(req.query.q) !== -1 ||
     excerpt.toLowerCase().indexOf(req.query.q) !== -1 ||
