@@ -5,7 +5,7 @@ const matter = require('gray-matter')
 function postData() {
   const files = fs.readdirSync(path.join('posts'))
 
-  let posts = files.map(filename => {
+  const posts = files.map(filename => {
     const slug = filename.replace('.md', '')
     const markdownWithMeta = fs.readFileSync(path.join('posts', filename), 'utf-8')
 
